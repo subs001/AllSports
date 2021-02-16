@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cricket Scores</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js" integrity="sha384-5h4UG+6GOuV9qXh6HqOLwZMY4mnLPraeTrjT5v07o347pj6IkfuoASuGBhfDsp3d" crossorigin="anonymous"></script><link rel="stylesheet" href="./style.css">
+        <link rel="stylesheet" href="/comments.css">
+    </head>
+<body>
+    <!-- CenterSport Logo -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img src="/images/trophy.png" alt="" width="30" height="25" class="d-inline-block align-top">
+            AllSports
+          </a>
+        </div>
+      </nav>
+    <p>Here we display the cricket scores.</p>
+    <!-- End of CenterSport Logo -->
+
+    <!-- Comment Section -->
+    <div class="card comment-box">
+      <% if(data!=null){ var check = 0;%> 
+      <% for(var key of Object.keys(data)){ %>
+        <% if(data[key]['parentID'] == id){ check = 1;%> 
+        <div class="user-comments">
+          <h6><img src="/images/profile-user.png" alt="" width="40" style="margin-right: 20px;"> <%= data[key]['username']  %>: <%= data[key]['content']%></h6>
+        </div>
+        <hr>
+      <% }}} %> 
+      <% if(data == null || check == 0){ %>
+        <p>There are currently no comments available!</p>  
+      <% } %> 
+    
+      <!-- Input Comment -->
+     <div class="input-comment comment-box" style="margin-top: 50px;">
+      <form action="/comment" method="POST">
+          <textarea type="text" name="userComment" class="input-text-box" placeholder="Enter your comment here" autocomplete="false"></textarea>
+          <button type="submit" class="btn-primary" style="margin-top: 10px; border-radius: 10px;" >Submit</button>          
+      </form>
+     </div>
+      <!-- End of Input Comment -->
+    </div>
+    <!-- End of Comment Section -->
+   
+</body>
+</html>
