@@ -6,11 +6,12 @@ const path = require('path');
 const { response } = require('express');
 const bodyParser = require('body-parser');
 const keys = require('./config');
+app.use(bodyParser.urlencoded());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
-}));
+  }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -18,14 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.get('/', function(req, res){
-    
-    axios.get('https://stats.nba.com/stats/boxscore')
-    .then(function(response){
-        console.log(response);
-        res.render('index')
-    })
-    
-   
+        res.render('index');
 })
 
 app.get('/index', function(req, res){
@@ -57,7 +51,11 @@ app.get('/:sport/comments/:id', function(req, res){
     axios.get(keys.firebase + sport+'/.json')
     .then(function(response){
         res.render('comments', {data: response.data, id: gameID});
-    })    
+    })   
+    .catch(function(error){
+    	console.log(error);
+	})
+		
     
     app.post('/comment', function(req, res){
         var username = "Anonymous"
@@ -70,10 +68,12 @@ app.get('/:sport/comments/:id', function(req, res){
         axios.post(keys.firebase+sport+'/.json', obj)
         .then(function(){
             res.redirect(sport+'/comments/'+gameID)
-      
         })      
+        .catch(function(){
+    	console.log("error");
+		}) 
         
     })
 })
 
-app.listen(3000);
+app.listen(4000);
