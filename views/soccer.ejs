@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<head>
+    <script>
+        console.log(data);
+    </script>
+</head>
+<body>
+    <table>
+            <% for(var key of Object.keys(data['competitions'])){ %>
+                <% if(data['competitions'][key]['plan']=='TIER_ONE'){ %>
+                    <tr>
+                        <td>
+                            <%= data['competitions'][key]['name'] %>
+                        </td>
+                        <td>
+                            <%= data['competitions'][key]['id'] %>
+                        </td>
+                        <td>
+                            <%= data['competitions'][key]['area']['name'] %>
+                        </td>
+                        <form action="/matches" method="POST">
+                            <input type="hidden" name="competitionsId" value="<%= data['competitions'][key]['id'] %> ">
+                            <td>
+                                <td><a href="#" ><button class="btn-primary" style="border-radius: 10px;">GO</button></a></td>
+                            </td>
+                        </form>
+                    </tr>
+                </a>
+                <% } %> 
+            <% } %> 
+    </table>
+    <!-- <% if ( data.competitions) { %>
+        <% for(key in data.competitions) { %>
+          <% if(data.competitions.hasOwnProperty(key)) { %>
+            <div> <a class="pagelist" href="<%= data['competitions'][key]['subkey'] %>"><%= key %></a></div>
+          <% } %>
+        <% } %>
+      <% } %> -->
+</body>

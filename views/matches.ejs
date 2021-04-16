@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<head>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>
+                key
+            </td>
+            <td>
+                id
+            </td>
+            <td>
+                home
+            </td>
+            <td>
+                away
+            </td>
+            <td>
+                status
+            </td>
+            <td>
+                winner
+            </td>
+            <td>
+
+            </td>
+        </tr>
+        <% for(var key of Object.keys(data['matches'])){ %>
+            <a href=>
+                <tr>
+                    <td>
+                        <%= key %>
+                    </td>
+                    <td>
+                        <%= data['matches'][key]['id'] %>
+                    </td>
+                    <td>
+                        <%= data['matches'][key]['homeTeam']['name'] %>
+                    </td>
+                    <td>
+                        <%= data['matches'][key]['awayTeam']['name'] %>
+                    </td>
+                    <td>
+                        <%= data['matches'][key]['status'] %>
+                    </td>
+                    <td>
+                        <%= data['matches'][key]['score']['winner'] %>
+                    </td>
+                </tr>
+            </a>
+        <% } %> 
+    </table>
+</body>
