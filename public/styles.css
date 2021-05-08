@@ -7,7 +7,7 @@
     background: #F7F7F7;
   }
   #cards_landscape_wrap-2 .container{
-    padding-top: 50px; 
+    padding-top: 20px; 
     padding-bottom: 53px;
   }
   #cards_landscape_wrap-2 a{
@@ -48,7 +48,7 @@
   }
   #cards_landscape_wrap-2 .card-flyer{
     background: #FFFFFF;
-    margin-top: 50px;
+    margin-top: 0px;
     -webkit-transition: all 0.2s ease-in;
     -moz-transition: all 0.2s ease-in;
     -ms-transition: all 0.2s ease-in;
@@ -64,7 +64,7 @@
     -ms-transition: all 0.2s ease-in;
     -o-transition: all 0.2s ease-in;
     transition: all 0.2s ease-in;
-    margin-top: 50px;
+    margin-top: 0px;
   }
   #cards_landscape_wrap-2 .card-flyer .text-box p{
     margin-top: 10px;
@@ -75,7 +75,7 @@
     color: #000000;
   }
   #cards_landscape_wrap-2 .card-flyer .text-box h6{
-    margin-top: 0px;
+    margin-top: 10px;
     margin-bottom: 4px; 
     font-size: 18px;
     font-weight: bold;
@@ -119,6 +119,7 @@
 
 .card-body{
   padding: 1rem 1rem 0rem 1rem;
+  font-family: sans-serif;
 }
 
 .carousel-control{
@@ -136,3 +137,29 @@
 a:hover{
   text-decoration: none;
 }
+
+.article-img{
+  width: 400px;
+  height: 225px;
+  margin: auto;
+  margin-top: 30px;
+  box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;
+}
+
+.articles{
+  width: 650px;
+  height: 525px;
+  text-align: center;
+  margin: 30px auto;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+a:link, a:hover, a:visited{
+  color: grey;
+}
+
+.card-header{
+  font-size: xx-large;
+}
+
+

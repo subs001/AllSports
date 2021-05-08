@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns= "http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basketball Scores</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js" integrity="sha384-5h4UG+6GOuV9qXh6HqOLwZMY4mnLPraeTrjT5v07o347pj6IkfuoASuGBhfDsp3d" crossorigin="anonymous"></script><link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/sign.css">
+</head>
+<body >
+ 
+    
+    <!-- CenterSport Logo -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/index">
+            <img src="/images/trophy.png" alt="" width="30" height="25" class="d-inline-block align-top">
+            AllSports
+          </a>
+        </div>
+      </nav>
+
+    <!-- End of Navbar -->
+   
+    <!-- Text Card -->
+    <div id="cards_landscape_wrap-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="login-box">
+                        <h2>Sign-Up</h2>
+                        <form method="POST" action="/complete-signup" autocomplete="off">
+                          <div class="user-box">
+                            <input type="text" name="username" required=""><label>Username</label>
+                          </div>
+                          <div class="user-box">
+                            <input type="email" name="email" id="mail" onblur="echeck();" required=""><label>E-Mail</label>
+                          </div>
+                          <div class="user-box">
+                            <input type="text" name="p1" required="" id="p1"><label>Password</label>
+                          </div>
+                          <div class="user-box">
+                            <input type="text" name="p2" required="" id="p2" onblur="pcheck();"><label>Confirm Password</label>
+                          </div>
+                          <input type="submit">
+                        </form>
+                      </div>
+                </div>  
+    <!-- End of text card -->
+    <!-- Selection Card -->
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="card-flyer" style="margin-top: 0px;">
+                            <div class="text-box">
+                                <div class="text-container">
+                                        <div class="container">
+                                            <div class="row">
+                                                <h1>Why Sign Up?</h1>
+                                            </div>
+                                        </div>
+                                        <div class="container">
+                                            <div class="row">
+                                                <ul>
+                                                    <li>Choose Which Sports You Want To See On Your Homepage</li>
+                                                    <li>Track Your Comment History</li>
+                                                    <li>Get Notified About A Particular Team's' Games</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of selection card -->
+    
+</body>
+<script defer>
+    function pcheck(){
+        p1 = document.getElementById('p1').value;
+        p2 = document.getElementById('p2');
+        c = p2.value;
+        if(!p1.includes(c)){
+            p2.setCustomValidity("Passwords Must Match");
+            p2.reportValidity();
+        }
+        else if(p1==c){
+            p2.setCustomValidity("");
+        }
+    }
+    function echeck(){
+        email = document.getElementById("mail");
+        if (email.validity.typeMismatch) {
+            email.setCustomValidity("Please Enter A Valid Email Address");
+            email.reportValidity();
+        } else {
+            email.setCustomValidity("");
+        }
+    }
+    
+</script>
+</html>

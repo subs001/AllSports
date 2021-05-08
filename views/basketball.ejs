@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xml:lang="en" xmlns= "http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js" integrity="sha384-5h4UG+6GOuV9qXh6HqOLwZMY4mnLPraeTrjT5v07o347pj6IkfuoASuGBhfDsp3d" crossorigin="anonymous"></script><link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/toggle.css">
 </head>
 <body >
  
@@ -21,9 +22,16 @@
           </a>
         </div>
       </nav>
-    <p>Here we display the basketball scores.</p>
+    
+    <div style="margin: 0px 42%;">Scores
+    <label class="switch">
+      <input type="checkbox" id="switch">
+      <span class="slider round"></span>
+    </label>News
+    </div>
+    <div id="page-content" class="container basketball-score-card"></div>
      
-    <div class="container basketball-score-card " >
+    <div class="container basketball-score-card" id="scores">
     <table class="table table-striped table-dark table-hover table-borderless">
         <thead >
         <tr>
@@ -62,3 +70,53 @@
         </tbody>
     </table>
     </div>
+
+    <div id="news"  style="display: none;">      
+      <table id="news-table">
+        <% for(i=0;i<8;i+=2){  %> 
+        <tr>
+          <td>
+            <div class="articles card bg-dark text-white" >
+              <div class="card-header">
+                <%= news[i]['title'] %> 
+              </div>
+              <img class="article-img card-img-top" src="<%= news[i]['urlToImage'] %> " alt="">
+              <div class="card-body">  
+                <p><%= news[i]['description']  %> </p>
+                <p><a href="<%= news[i]['url'] %> ">Read More</a></p>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="articles card bg-dark text-white" >
+              <div class="card-header">
+                <%= news[i+1]['title'] %> 
+              </div>
+              <img class="article-img card-img-top" src="<%= news[i+1]['urlToImage'] %> " alt="">
+              <div class="card-body">  
+                <p><%= news[i+1]['description']  %> </p>
+                <p><a href="<%= news[i+1]['url'] %> ">Read More</a></p>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <% }  %> 
+      </table>      
+    </div>
+
+  </body>
+  <script defer>
+    scores = document.getElementById('scores');
+    news = document.getElementById('news')
+    document.getElementById('switch').addEventListener("click", function(){
+      if(document.getElementById('switch').checked == false){
+        scores.style.display = "block";
+        news.style.display = "none";
+      }
+      else{
+        scores.style.display = "none";
+        news.style.display = "block";
+      }
+    })
+  </script>
+</html>

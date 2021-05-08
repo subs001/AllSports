@@ -3,11 +3,12 @@ const express = require('express');
 const app = express();
 const axios = require('axios');
 const path = require('path');
+const md5 = require('md5');
 const { response } = require('express');
 const bodyParser = require('body-parser');
 const keys = require('./config');
+const { exit } = require('process');
 app.use(bodyParser.urlencoded());
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -26,6 +27,25 @@ app.get('/index', function(req, res){
     res.redirect('/');
 })
 
+app.get('/signup', function(req, res){
+    res.render('signup');
+    app.post('/complete-signup', function(req1, res1){
+        var user_obj={
+            "username": req1.body.username,
+            "email": req1.body.email,
+            "password": md5(req1.body.p1)
+        };
+        axios.post(keys.firebase+'user/.json', user_obj)
+        .then(function(){
+            res1.redirect('/');
+        })      
+        .catch(function(error){
+    	console.log(error);
+		})
+
+    });
+})
+
 var gameID = "";
 app.get('/basketball', function(req,res){
     let d = new Date();
@@ -34,14 +54,16 @@ app.get('/basketball', function(req,res){
         p.setDate(p.getDate() - 1);
         t.setDate(t.getDate() + 1);
         d = d.toISOString().slice(0,10);p = p.toISOString().slice(0,10);t = t.toISOString().slice(0,10);
-    axios.get('https://www.balldontlie.io/api/v1/games?seasons[]=2020&&start_date='+p+'&&end_date='+d)
-    .then(function(response){
-        res.render('basketball', {data: response.data});
-        app.post('/gameComments', function(req1, res1){
-            gameID = req1.body.gameID.trim();
-           res1.redirect('basketball/comments/' + req1.body.gameID.trim());
-        })
-        
+        axios.get('https://www.balldontlie.io/api/v1/games?seasons[]=2020&&start_date='+p+'&&end_date='+d)
+        .then(function(response){
+            axios.get("https://newsapi.org/v2/everything?q=NBA&apiKey="+keys.news)
+            .then(function(response2){
+                res.render('basketball', {data: response. data, news: response2.data.articles})
+                app.post('/gameComments', function(req1, res1){
+                gameID = req1.body.gameID.trim();
+                res1.redirect('basketball/comments/' + req1.body.gameID.trim());
+            })
+        })        
     })
 })
 
@@ -76,4 +98,4 @@ app.get('/:sport/comments/:id', function(req, res){
     })
 })
 
-app.listen(4000);
+app.listen(3000);

@@ -10,8 +10,17 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
-    "ejs": "^3.1.5",
+    "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "md5": "^2.3.0",
     "nodemon": "^2.0.7"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/subs001/AllSports.git"
+  },
+  "bugs": {
+    "url": "https://github.com/subs001/AllSports/issues"
+  },
+  "homepage": "https://github.com/subs001/AllSports#readme"
 }
