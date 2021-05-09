@@ -50,11 +50,10 @@
     font-size: 12px;
   }
   
-  .login-box form a {
+  .login-box form .submit {
     position: relative;
     display: inline-block;
     padding: 10px 20px;
-    color: #03e9f4;
     font-size: 16px;
     text-decoration: none;
     text-transform: uppercase;
@@ -64,16 +63,13 @@
     letter-spacing: 4px
   }
   
-  .login-box a:hover {
-    background: #03e9f4;
+  .login-box .submit {
+    background: #00a0a8;
     color: #fff;
     border-radius: 5px;
   }
   
-  .login-box a span {
-    position: absolute;
-    display: block;
-  }
+  
   
 #cards_landscape_wrap-2{
     padding-top: 50px;

@@ -1,18 +1,18 @@
 //jshint esversion: 6
+
 const express = require('express');
 const app = express();
 const axios = require('axios');
 const path = require('path');
 const md5 = require('md5');
 const { response } = require('express');
-const bodyParser = require('body-parser');
 const keys = require('./config');
 const { exit } = require('process');
-app.use(bodyParser.urlencoded());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: true
-  }));
+const firebase = require('firebase');
+firebase.initializeApp(keys.firebase_config);
+const database = firebase.database();
+app.use(express.urlencoded({extended: true}));
+app.use(express.json())
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -27,25 +27,60 @@ app.get('/index', function(req, res){
     res.redirect('/');
 })
 
+//signup checks if username exists, if yes -> display error, else register the user successfully and take them to homepage
 app.get('/signup', function(req, res){
     res.render('signup');
     app.post('/complete-signup', function(req1, res1){
-        var user_obj={
-            "username": req1.body.username,
-            "email": req1.body.email,
-            "password": md5(req1.body.p1)
-        };
-        axios.post(keys.firebase+'user/.json', user_obj)
-        .then(function(){
-            res1.redirect('/');
-        })      
-        .catch(function(error){
-    	console.log(error);
-		})
-
+        database.ref().child("usernames").orderByChild("username").equalTo(req1.body.username).once("value",snapshot => {
+        if (snapshot.exists()){
+                res1.render('error', {error: "That Username Already Exists! Please Try A Different One."});            
+            }
+        else{
+            var user_obj={
+                "username": req1.body.username,
+                "email": req1.body.email,
+                "password": md5(req1.body.p1)
+            };
+            var user_name = {"username": req1.body.username};
+            axios.post(keys.firebase+'user/.json', user_obj)
+            .then(function(){
+                axios.post(keys.firebase+'usernames/.json', user_name)
+                .then(function(){
+                    res1.redirect('/');
+                })
+                .catch(function(){});
+            })      
+            .catch(function(error){
+                console.log(error);
+                })
+            }
+        });
+        
     });
 })
 
+//User upon being signed in will have their username stored in a global variable, simulating session creation.
+var current_user = "";
+app.get('/signin', function(req, res){
+    res.render('signin', {error:null});
+    app.post('/complete-signin', function(req1, res1){
+        database.ref().child("user").orderByChild("username").limitToFirst(1).equalTo(req1.body.username).once("value",snapshot => {
+            if (!snapshot.exists()){
+                    res1.render('signin', {error: "Username not found!"});            
+                }
+            else{
+                const userData = snapshot.val();
+                Objkey = Object.keys(userData)
+                if(md5(req1.body.p1) == userData[Objkey].password){
+                    current_user = userData[Objkey].username;
+                    res1.render('error', {error: "Sign In Success!"})
+                }
+            }
+        })
+    })
+})
+
+//gameID has been made global to allow it to be accessed across functions, as it is obtained in sport and used in comment
 var gameID = "";
 app.get('/basketball', function(req,res){
     let d = new Date();
