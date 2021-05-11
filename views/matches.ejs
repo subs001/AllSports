@@ -1,3 +1,4 @@
+<!-- Soccer matches of a particular competitoin -->
 <!DOCTYPE html>
 <head>
 </head>
@@ -11,10 +12,19 @@
                 id
             </td>
             <td>
+                Date
+            </td>
+            <td>
                 home
             </td>
             <td>
+                score
+            </td>
+            <td>
                 away
+            </td>
+            <td>
+                score
             </td>
             <td>
                 status
@@ -36,10 +46,19 @@
                         <%= data['matches'][key]['id'] %>
                     </td>
                     <td>
+                        <%= data['matches'][key]['utcDate'].substring(0,10) %>
+                    </td>
+                    <td>
                         <%= data['matches'][key]['homeTeam']['name'] %>
                     </td>
                     <td>
+                        <%= data['matches'][key]['score']['fullTime']['homeTeam'] %>
+                    </td>
+                    <td>
                         <%= data['matches'][key]['awayTeam']['name'] %>
+                    </td>
+                    <td>
+                        <%= data['matches'][key]['score']['fullTime']['awayTeam'] %>
                     </td>
                     <td>
                         <%= data['matches'][key]['status'] %>

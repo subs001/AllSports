@@ -5,6 +5,7 @@
     </script>
 </head>
 <body>
+    <a href='soccer/matches'><button >Recent Matches</button></a>
     <table>
             <% for(var key of Object.keys(data['competitions'])){ %>
                 <% if(data['competitions'][key]['plan']=='TIER_ONE'){ %>
@@ -29,11 +30,4 @@
                 <% } %> 
             <% } %> 
     </table>
-    <!-- <% if ( data.competitions) { %>
-        <% for(key in data.competitions) { %>
-          <% if(data.competitions.hasOwnProperty(key)) { %>
-            <div> <a class="pagelist" href="<%= data['competitions'][key]['subkey'] %>"><%= key %></a></div>
-          <% } %>
-        <% } %>
-      <% } %> -->
 </body>

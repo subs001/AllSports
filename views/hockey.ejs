@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basketball Scores</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js" integrity="sha384-5h4UG+6GOuV9qXh6HqOLwZMY4mnLPraeTrjT5v07o347pj6IkfuoASuGBhfDsp3d" crossorigin="anonymous"></script><link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/index">
+            <img src="/images/trophy.png" alt="" width="30" height="25" class="d-inline-block align-top">
+            AllSports
+          </a>
+        </div>
+    </nav>
+    <!-- schedule -->
+    <div class="hockey-scorecard">
+        <img src="/images/NHL_logos-master/NHL_logo.png" width="100" >
+        <table class="table table-dark table-striped">
+                <%  var datesArr = data['dates']; %>
+                <%  datesArr.forEach((x, i) =>{ %>
+                        <tr>
+                            <td rowspan="6">
+                                <%= datesArr[i]['date'] %>
+                            </td>  
+                        </tr>
+                        <tbody>
+                                <tr>
+                                    <th>Game ID</th>
+                                    <th>Status</th>
+                                    <th>Home Team</th>
+                                    <th></th>
+                                    <th>Away Team</th>
+                                    <th></th>
+                                </tr>
+                                
+                            <% var numGames = datesArr[i]['totalGames']; %>
+                            <%    console.log(datesArr[0]['games'][0]); %>
+                            <%    for(let j=0;j<numGames; j++) { %>
+                                <tr>
+                                    <td>
+                                        <%= datesArr[i]['games'][j]['gamePk'] %>
+                                    </td>
+                                    <td>
+                                        <%= datesArr[i]['games'][j]['status']['detailedState'] %>
+                                    </td>
+                                    <td>
+                                        <% var teamLogo1 = "/images/NHL_logos-master/" + datesArr[i]['games'][j]['teams']['home']['team']['name'].replace(/ /g, '%20') + ".png";%>
+                                        <img src=<%= teamLogo1 %> width="20" height="20">
+                                        <%= datesArr[i]['games'][j]['teams']['home']['team']['name'] %>
+                                    </td>
+                                    <td>
+                                        <%= datesArr[i]['games'][j]['teams']['home']['score'] %>
+                                    </td>
+                                    <td>
+                                        <% var teamLogo2 = "/images/NHL_logos-master/" + datesArr[i]['games'][j]['teams']['away']['team']['name'].replace(/ /g, '%20') + ".png";%>
+                                        <img src=<%= teamLogo2 %> width="20" height="20">
+                                        <%= datesArr[i]['games'][j]['teams']['away']['team']['name'] %>
+                                    </td>
+                                    <td>
+                                        <%= datesArr[i]['games'][j]['teams']['away']['score'] %>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                <% }) %> 
+        </table>    
+    </div>
+</body>
