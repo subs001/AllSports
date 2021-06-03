@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Match Discussion</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js" integrity="sha384-5h4UG+6GOuV9qXh6HqOLwZMY4mnLPraeTrjT5v07o347pj6IkfuoASuGBhfDsp3d" crossorigin="anonymous"></script><link rel="stylesheet" href="./style.css">
+        <link rel="stylesheet" href="/comments.css">
+    </head>
+<body>
+    <!-- CenterSport Logo -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/index">
+            <img src="/images/trophy.png" alt="" width="30" height="25" class="d-inline-block align-top">
+            AllSports
+          </a>
+        </div>
+      </nav>
+    <!-- End of CenterSport Logo -->
+    
+    <!-- game details -->
+    <div class="container" style="border:1px solid black; margin-top: 25px;">
+
+      <div class = "row"> 
+        <div class = "col-lg-2"> <h3> </h3></div>
+        <div class = "col-lg-8" style=" text-align: center;"><h2>Match Details</h2> </div>
+        <div class = "col-lg-2"> <h3> </h3></div>
+      
+      </div>
+      <div class = "row"> 
+        <div class = "col-lg-2"> <h4><%= gameTeams[0]; %>           </h4></div>
+        <div class = "col-lg-8"><h1>      </h1> </div>
+        <div class = "col-lg-2"> <h4><%= gameTeams[1] %></h4></div>
+      
+      </div>
+      <div class = "row"> 
+        <div class = "col-lg-2"> <h3><%= gameTeams[2]; %>           </h3></div>
+        <div class = "col-lg-8" style=" text-align: center;"><h2> </h2> </div>
+        <div class = "col-lg-2"> <h3><%= gameTeams[3]; %></h3></div>
+      
+      </div>
+    </div>
+
+    <!-- Comment Section -->
+    <div class="card comment-box">
+      <% if(data!=null){ var check = 0;%> 
+      <% for(var key of Object.keys(data)){ %>
+        <% if(data[key]['parentID'] == id){ check = 1;%>
+
+        <div class="user-comments">
+          <h6><img src="/images/profile-user.png" alt="" width="40" style="margin-right: 20px;"> <%= data[key]['username']  %>: <%= data[key]['content']%></h6>
+        </div>
+        <hr>
+      <% }}} %> 
+      <% if(data == null || check == 0){ %>
+        <p>There are currently no comments available!</p>  
+      <% } %> 
+    
+      <!-- Input Comment -->
+     <div class="input-comment comment-box"  style="margin-top: 50px;">
+      <form action="/comment" method="POST" autocomplete="false" >
+          <input type="hidden" name="userComment" id="hiddenInp">
+          <textarea type="text" class="input-text-box" placeholder="Enter your comment here"  id="com-box" maxlength="200" ></textarea>
+          <button type="submit" class="btn-primary" style="margin-top: 10px; border-radius: 10px;" onclick="show_msg();">Submit</button>          
+      </form>
+     </div>
+      <!-- End of Input Comment -->
+    <div id="msg" style="margin-left: 20px;"></div>
+    </div>
+    
+    <!-- End of Comment Section -->
+    
+   
+</body>
+</html>
+
+<script defer>
+ function show_msg(){
+    document.getElementById('hiddenInp').value = document.getElementById('com-box').value;
+    document.getElementById('com-box').value   = "";
+    document.getElementById('msg').textContent = "Please refresh the page to see your comment."
+ }
+</script>
