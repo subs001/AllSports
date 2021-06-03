@@ -16,7 +16,7 @@ app.use(express.json())
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
-
+var current_user = "";
 
 
 app.get('/', function(req, res){
@@ -25,6 +25,20 @@ app.get('/', function(req, res){
 
 app.get('/index', function(req, res){
     res.redirect('/');
+})
+//help
+app.get('/help', function(req, res){
+    res.render('help');
+})
+//profile
+app.get('/profile', function(req, res){
+    database.ref().child("user-comments/"+current_user).once("value",snapshot => {
+                res.render('profile', {comments: snapshot.val(), user: current_user})       
+                app.get('/logout', function(req1, res1){
+                    current_user = "";
+                    res1.redirect('/')
+                })    
+    })
 })
 
 // get dates of today and first day of month
@@ -44,26 +58,37 @@ if(mm<10)
 var firstDay = yyyy+'-'+mm+'-'+'01'; // of the month 
 var toDay = yyyy+'-'+mm+'-'+dd;
 
+
 //signup checks if username exists, if yes -> display error, else register the user successfully and take them to homepage
 app.get('/signup', function(req, res){
     res.render('signup');
     app.post('/complete-signup', function(req1, res1){
         database.ref().child("usernames").orderByChild("username").equalTo(req1.body.username).once("value",snapshot => {
         if (snapshot.exists()){
+                //res1.status(204).send();
                 res1.render('error', {error: "That Username Already Exists! Please Try A Different One."});            
             }
         else{
             var user_obj={
                 "username": req1.body.username,
                 "email": req1.body.email,
-                "password": md5(req1.body.p1)
+                "password": md5(req1.body.p1),
+                "subscribed": {
+                    "basketball": true,
+                    "soccer": true,
+                    "football": true
+                }
             };
             var user_name = {"username": req1.body.username};
             axios.post(keys.firebase+'user/.json', user_obj)
             .then(function(){
                 axios.post(keys.firebase+'usernames/.json', user_name)
                 .then(function(){
-                    res1.redirect('/');
+                    // axios.put(keys.firebase+'user-comments/'+req1.body.username+'.json', )
+                    // .then(function(){
+                         res1.redirect('/');
+                    // })
+                    // .catch(function(error){console.log(error);})
                 })
                 .catch(function(){});
             })      
@@ -77,7 +102,7 @@ app.get('/signup', function(req, res){
 })
 
 //User upon being signed in will have their username stored in a global variable, simulating session creation.
-var current_user = "";
+
 app.get('/signin', function(req, res){
     res.render('signin', {error:null});
     app.post('/complete-signin', function(req1, res1){
@@ -90,22 +115,21 @@ app.get('/signin', function(req, res){
                 Objkey = Object.keys(userData)
                 if(md5(req1.body.p1) == userData[Objkey].password){
                     current_user = userData[Objkey].username;
-                    res1.render('error', {error: "Sign In Success!"})
+                    res1.redirect('profile');   
+                }
+                else{
+                    res1.render('signin', {error: "Password is Incorrect!"})
                 }
             }
         })
     })
 })
-
-
-//code for individual sports pages below
-
 //basketball
 //gameID has been made global to allow it to be accessed across functions, as it is obtained in sport and used in comment
 var gameID = "";
-var gameDetail = "";
+var gameDetails = "";
 app.get('/basketball', function(req,res){
-        let d = new Date();
+    let d = new Date();
         let p = new Date();
         let t = new Date();
         p.setDate(p.getDate() - 1);
@@ -117,16 +141,15 @@ app.get('/basketball', function(req,res){
             .then(function(response2){
                 res.render('basketball', {data: response. data, news: response2.data.articles})
                 app.post('/gameComments', function(req1, res1){
-                    gameID = req1.body.gameID.trim();
-                    console.log(req1.body.gameID);
-                    gameDetail = req1.body.gameDetail;
-                    res1.redirect('basketball/comments/' + req1.body.gameID.trim());
-                })
-            })        
-        })
+                gameID = req1.body.gameID.trim();
+                gameDetails = req1.body.gameDetail;
+                res1.redirect('basketball/comments/' + req1.body.gameID.trim());
+            })
+        })        
+    })
 })
 
-
+//soccer
 // soccer competitions page
 var competitionsId;
 app.get('/soccer/soccerCompetitions',function(req,res){
@@ -205,7 +228,6 @@ app.get('/soccer/',function(req,res){
 
 })
 
-
 //hockey
 app.get('/hockey',function(req,res){
 
@@ -237,10 +259,9 @@ app.get('/hockey',function(req,res){
 });
 // comments
 app.get('/:sport/comments/:id', function(req, res){
-    var sport = req.params.sport;
+    var sport = req.params.sport
     var size = 0;
-    var gameTeams = gameDetail.split('-');
-    console.log(gameTeams);
+    var gameTeams = gameDetails.split('-');
     axios.get(keys.firebase + sport+'/.json')
     .then(function(response){
         res.render('comments', {data: response.data, id: gameID, gameTeams: gameTeams});
@@ -248,18 +269,30 @@ app.get('/:sport/comments/:id', function(req, res){
     .catch(function(error){
     	console.log(error);
 	})
-
+		
+    
     app.post('/comment', function(req, res){
-        var username = "Anonymous"
+        (current_user=="")?username="Anonymous":username=current_user;
+        current_comment = req.body.userComment;
         var obj = {
             "parentID": gameID,
-            "content": req.body.userComment,
+            "content": current_comment,
             "username": username
         }
-        
+        var datetime = new Date();
+        datetime = datetime.toISOString().slice(0,10);
         axios.post(keys.firebase+sport+'/.json', obj)
         .then(function(){
-            res.redirect(sport+'/comments/'+gameID)
+            if(current_user!=""){
+                axios.put(keys.firebase+'user-comments/'+current_user+'/'+current_comment+'/.json', [datetime])
+                .then(function(){
+                    res.status(204).send();
+                })
+                .catch(function(error){console.log(error);})
+            }
+            else{
+                res.status(204).send();
+            }
         })      
         .catch(function(){
     	console.log("error");

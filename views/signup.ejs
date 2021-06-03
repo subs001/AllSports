@@ -13,16 +13,23 @@
 <body >
  
     
-    <!-- CenterSport Logo -->
+    <!-- Navbar -->
+    
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
           <a class="navbar-brand" href="/index">
+            <!-- Allsports Logo -->
             <img src="/images/trophy.png" alt="" width="30" height="25" class="d-inline-block align-top">
             AllSports
           </a>
+          <a class="navbar-brand" href="/profile" style="margin-left: 80%;" >Profile</a>
+          <a class="navbar-brand" href="/basketball"><img src="/images/basketball-nav.png" alt="" class="nav-img"></a>
+          <a class="navbar-brand" href="/soccer"><img src="/images/soccer-nav.png" alt="" class="nav-img"></a>
+          <a class="navbar-brand" href="/hockey"><img src="/images/hockey-nav.png" alt="" class="nav-img"></a>
         </div>
       </nav>
-
+  
+    
     <!-- End of Navbar -->
    
     <!-- Text Card -->
@@ -40,10 +47,10 @@
                             <input type="email" name="email" id="mail" onblur="echeck();" required=""><label>E-Mail</label>
                           </div>
                           <div class="user-box">
-                            <input type="text" name="p1" required="" id="p1"><label>Password</label>
+                            <input type="password" name="p1" required="" id="p1"><label>Password</label>
                           </div>
                           <div class="user-box">
-                            <input type="text" name="p2" required="" id="p2" onblur="pcheck();"><label>Confirm Password</label>
+                            <input type="password" name="p2" required="" id="p2" onblur="pcheck();"><label>Confirm Password</label>
                           </div>
                           <input type="submit" class="submit">
                         </form>
@@ -101,6 +108,7 @@
             email.setCustomValidity("");
         }
     }
+
     
 </script>
 </html>

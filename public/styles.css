@@ -1,3 +1,6 @@
+body{
+  background: #F7F7F7;
+}
 
 
 /* Card Styling */
@@ -85,7 +88,14 @@
     color: #00acc1;
   }
 /* End of card styling */
-
+/* Nav style img */
+.nav-img{
+  height: 24px;
+  width: 24px;
+  margin-right: 0px;
+  position: relative;
+}
+/* end nav */
 .options{
     display: block;
     width: 50px;
@@ -146,13 +156,6 @@ a:hover{
   box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;
 }
 
-.articles{
-  width: 650px;
-  height: 525px;
-  text-align: center;
-  margin: 30px auto;
-  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
-}
 
 a:link, a:hover, a:visited{
   color: grey;
@@ -161,4 +164,15 @@ a:link, a:hover, a:visited{
 .card-header{
   font-size: xx-large;
 }
+
+a[href="/profile"]{
+  text-decoration: none;
+  color: whitesmoke;
+  font-size: large;
+  margin-right: 20px;
+}
+
+
+
+
 

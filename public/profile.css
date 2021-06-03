@@ -1,0 +1,107 @@
+.user-profile{
+    width: 40%;
+    float: left;
+}
+.sports{
+    width: 40%;
+    float: right;
+}
+
+.full-container {
+    margin: auto;
+    margin-top: 50px;
+    width: 75%;
+    border-style: groove;
+    border-color: #000;
+}
+.profile-container {
+    background-color: rgb(240, 240, 240);
+    padding-top: 10px;
+    padding-bottom: 20px;
+    padding-left: 40px;
+    color: rgba(0, 0, 0);
+}
+
+
+h1 {
+    color: rgb(0, 0, 0);
+    font-size: 28px;
+    letter-spacing: 1px;
+    margin: 10px 0;
+  }
+h6 {
+    color: rgba(0, 0, 0);
+	opacity: 0.6;
+	margin: 0;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+.pro-img {
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    padding: 20px;
+  }
+
+.pbox {
+    float: left;
+    padding: 20px;
+    width: 50%;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial;
+  }
+.tablink {
+    background-color: #777;
+    color: #fff;
+    float: right;
+    box-shadow: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 25%;
+  }
+.tablink :active{
+    background-color: #777;
+}
+  
+  /* Style the tab content (and add height:100% for full page content) */
+  .tabcontent {
+    color: #f6f5f5;
+    display: none;
+    padding: 100px 20px;
+    height: 100%;
+  }
+  #Listings {background-color: #1C709D;}
+  #Bids {background-color: #f9813a;}
+
+  #signin{
+    text-align: center;
+    font-size: large;
+    margin: 50px auto;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  th{
+      font-size: 2em;
+      margin: auto;
+      padding: 10px 50px;
+  }
+
+  td{
+    margin: auto;
+      padding: 10px 50px ;
+  }
+
+  table{
+      margin: 20px;
+  }
+  #showComments{
+      margin-top: 10px;
+      box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;
+  }
