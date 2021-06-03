@@ -36,15 +36,27 @@
       <% } %> 
     
       <!-- Input Comment -->
-     <div class="input-comment comment-box" style="margin-top: 50px;">
-      <form action="/comment" method="POST">
-          <textarea type="text" name="userComment" class="input-text-box" placeholder="Enter your comment here" autocomplete="false"></textarea>
-          <button type="submit" class="btn-primary" style="margin-top: 10px; border-radius: 10px;" >Submit</button>          
+     <div class="input-comment comment-box"  style="margin-top: 50px;">
+      <form action="/comment" method="POST" autocomplete="false" >
+          <input type="hidden" name="userComment" id="hiddenInp">
+          <textarea type="text" class="input-text-box" placeholder="Enter your comment here"  id="com-box" maxlength="200" ></textarea>
+          <button type="submit" class="btn-primary" style="margin-top: 10px; border-radius: 10px;" onclick="show_msg();">Submit</button>          
       </form>
      </div>
       <!-- End of Input Comment -->
+    <div id="msg" style="margin-left: 20px;"></div>
     </div>
+    
     <!-- End of Comment Section -->
+    
    
 </body>
 </html>
+
+<script defer>
+ function show_msg(){
+    document.getElementById('hiddenInp').value = document.getElementById('com-box').value;
+    document.getElementById('com-box').value   = "";
+    document.getElementById('msg').textContent = "Please refresh the page to see your comment."
+ }
+</script>

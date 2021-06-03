@@ -27,12 +27,21 @@ app.get('/index', function(req, res){
     res.redirect('/');
 })
 
+app.get('/help', function(req, res){
+    res.render('help');
+})
+
+app.get('/profile', function(req, res){
+    res.render('profile');
+})
+
 //signup checks if username exists, if yes -> display error, else register the user successfully and take them to homepage
 app.get('/signup', function(req, res){
     res.render('signup');
     app.post('/complete-signup', function(req1, res1){
         database.ref().child("usernames").orderByChild("username").equalTo(req1.body.username).once("value",snapshot => {
         if (snapshot.exists()){
+                //res1.status(204).send();
                 res1.render('error', {error: "That Username Already Exists! Please Try A Different One."});            
             }
         else{
@@ -115,7 +124,7 @@ app.get('/:sport/comments/:id', function(req, res){
 		
     
     app.post('/comment', function(req, res){
-        var username = "Anonymous"
+        (current_user=="")?username="Anonymous":username=current_user;
         var obj = {
             "parentID": gameID,
             "content": req.body.userComment,
@@ -124,7 +133,7 @@ app.get('/:sport/comments/:id', function(req, res){
         
         axios.post(keys.firebase+sport+'/.json', obj)
         .then(function(){
-            res.redirect(sport+'/comments/'+gameID)
+            res.status(204).send();
         })      
         .catch(function(){
     	console.log("error");
