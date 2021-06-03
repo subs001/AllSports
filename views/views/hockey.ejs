@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hockey</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js" integrity="sha384-5h4UG+6GOuV9qXh6HqOLwZMY4mnLPraeTrjT5v07o347pj6IkfuoASuGBhfDsp3d" crossorigin="anonymous"></script><link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        button:active {
+            border-style: outset;
+            }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/index">
+            <img src="/images/trophy.png" alt="" width="30" height="25" class="d-inline-block align-top">
+            AllSports
+          </a>
+        </div>
+    </nav>
+    <!-- score/news selector -->
+    <div class="text-center" style="margin-bottom: 35px;">
+        <div class="btn-group mx-auto" role="group" style="width: 50%;">
+            <button type="button" class="btn btn-secondary shadow-none" onclick="scoreShow()">Scores</button>
+            <button type="button" class="btn btn-secondary shadow-none" onclick="newsShow()">NHL News</button>
+        </div>
+    </div>
+
+    <!-- News -->
+    <!-- divsnews -->
+    <div class="container" id="hockeyNews" style="display: none;">
+      <!--Grid row-->
+      <div class="row">
+        <div class="col-md-9 mb-4">
+          <section>
+            <% for(i=0;i<4;i++){  %>
+            <!-- Individual Post -->
+            <div class="row center">
+              <div class="col-md-4 mb-4">
+                <div class="bg-image hover-overlay shadow-1-strong rounded ripple" data-mdb-ripple-color="light">
+                  <img src="<%= news[i]['urlToImage'] %> " class="img-fluid"  alt="Image not Found"/>
+                  <a href="#!">
+                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                  </a>
+                </div>
+              </div>
+
+              <div class="col-md-8 mb-4">
+                <h5><%= news[i]['title'] %></h5>
+                <p>
+                  <%- news[i]['description']  %>
+                </p>
+
+                <a href="<%= news[i]['url'] %>"><button type="button" class="btn btn-primary">Read</button></a>
+              </div>
+            </div>
+            <% }%>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- schedule -->
+    <div id="hockeyScores" class="hockey-scorecard container" style="text-align: center; display: block;">
+        <img src="/images/NHL_logos-master/NHL_logo.png" width="100" >
+        <table class="table table-dark table-striped" style="margin: 0%;">
+                <%  var datesArr = data['dates']; %>
+                <%  datesArr.forEach((x, i) =>{ %>
+                        <tr>
+                            <td colspan="6" tyle="text-align:center;">
+                                <%= datesArr[i]['date'] %>
+                            </td>  
+                        </tr>
+                        <tbody>
+                                <tr>
+                                    <!-- <th>Game ID</th> -->
+                                    <th>Status</th>
+                                    <th>Home Team</th>
+                                    <th></th>
+                                    <th>Away Team</th>
+                                    <th></th>
+                                    <th>Discussion Page</th>
+                                </tr>
+                                
+                            <% var numGames = datesArr[i]['totalGames']; %>
+                            <%    console.log(datesArr[0]['games'][0]); %>
+                            <%    for(let j=0;j<numGames; j++) { %>
+                                <tr>
+                                    <!-- <td>
+                                        <%= datesArr[i]['games'][j]['gamePk'] %>
+                                    </td> -->
+                                    <td>
+                                        <%= datesArr[i]['games'][j]['status']['detailedState'] %>
+                                    </td>
+                                    <td>
+                                        <% var teamLogo1 = "/images/NHL_logos-master/" + datesArr[i]['games'][j]['teams']['home']['team']['name'].replace(/ /g, '%20') + ".png";%>
+                                        <img src=<%= teamLogo1 %> width="20" height="20">
+                                        <%= datesArr[i]['games'][j]['teams']['home']['team']['name'] %>
+                                    </td>
+                                    <td>
+                                        <%= datesArr[i]['games'][j]['teams']['home']['score'] %>
+                                    </td>
+                                    <td>
+                                        <% var teamLogo2 = "/images/NHL_logos-master/" + datesArr[i]['games'][j]['teams']['away']['team']['name'].replace(/ /g, '%20') + ".png";%>
+                                        <img src=<%= teamLogo2 %> width="20" height="20">
+                                        <%= datesArr[i]['games'][j]['teams']['away']['team']['name'] %>
+                                    </td>
+                                    <td>
+                                        <%= datesArr[i]['games'][j]['teams']['away']['score'] %>
+                                    </td>
+                                    <form action="/gameComments" method="POST">
+                                      <input type="hidden" name="gameID" value="<%= datesArr[i]['games'][j]['gamePk'] %> ">
+                                      <input type="hidden" name="gameDetail" value="<%= datesArr[i]['games'][j]['teams']['home']['team']['name'] +'-'+ datesArr[i]['games'][j]['teams']['away']['team']['name']+'-'+ datesArr[i]['games'][j]['teams']['home']['score'] +'-' + datesArr[i]['games'][j]['teams']['away']['score']; %>">
+                                    <td><a href="#" ><button class="btn-primary" style="border-radius: 10px;">GO</button></a></td>
+                                    </form> 
+                                </tr>
+                            <% } %>
+                        </tbody>
+                <% }) %> 
+        </table>    
+    </div>
+</body>
+<script defer>
+    scores = document.getElementById('hockeyScores');
+    news = document.getElementById('hockeyNews');
+
+    function scoreShow(){
+        scores.style.display = "block";
+        news.style.display = "none";
+    }
+    function newsShow(){
+        scores.style.display = "none";
+        news.style.display = "block";
+    }
+</script>
+</html>
