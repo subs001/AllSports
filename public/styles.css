@@ -157,5 +157,14 @@ a:link, a:hover, a:visited{
   font-size: xx-large;
 }
 
+a[href="/profile"]{
+  text-decoration: none;
+  color: whitesmoke;
+  font-size: large;
+  margin-right: 20px;
+}
+
+
+
 
 

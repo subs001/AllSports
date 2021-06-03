@@ -20,6 +20,7 @@
             <img src="/images/trophy.png" alt="" width="30" height="25" class="d-inline-block align-top">
             AllSports
           </a>
+          <a href="/profile" style="float: right;">Profile</a>
         </div>
       </nav>
     
@@ -63,6 +64,7 @@
                 <td><%= data['data'][key]['status']%></td>
                 <form action="/gameComments" method="POST">
                   <input type="hidden" name="gameID" value="<%= data['data'][key]['id'] %> ">
+                  <input type="hidden" name="gameDetail" value="<%= data['data'][key]['home_team']["full_name"]+'-'+ data['data'][key]['visitor_team']['full_name']+'-'+ data['data'][key]['home_team_score'] +'-' + data['data'][key]['visitor_team_score']; %>">
                 <td><a href="#" ><button class="btn-primary" style="border-radius: 10px;">GO</button></a></td>
                 </form>  
               </tr>

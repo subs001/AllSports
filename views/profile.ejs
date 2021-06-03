@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js" integrity="sha384-5h4UG+6GOuV9qXh6HqOLwZMY4mnLPraeTrjT5v07o347pj6IkfuoASuGBhfDsp3d" crossorigin="anonymous"></script><link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/profile.css">
 </head>
 <body >
  
@@ -19,8 +20,62 @@
             <img src="/images/trophy.png" alt="" width="30" height="25" class="d-inline-block align-top">
             AllSports
           </a>
+          <a href="/profile" style="float: right;">Profile</a>
         </div>
       </nav>
 
+      <% if(user!=""){ %> 
+
+        <div class="full-container">
+          <div class="profile-container">
+            <div class="row panel">
+              <img src="/images/profile-user.png" class="pro-img">
+                <div class="pbox">  
+                    <h1>Username: <%= user%></h1>
+                    <button class="btn btn-light" id="showComments" >Show Comment History</button>
+                </div>
+            </div>   
+            <form action="/logout" >
+              <button type="submit" class="btn btn-primary" style="margin-left: 25px;">Log Out</button>
+            </form>
+          </div>
+
+          <div style="display: none;" id="comments">
+            <% if(comments==null){%>
+                <tr >
+                  <td><h3>No Comments Found!</h3></td>
+                </tr>
+            <% }else{ %> 
+            <table>
+              <tr>
+                <th>Comment</th>
+                <th>Date</th>
+              </tr>
+
+            <%for(var key of Object.keys(comments)){ %>
+              <tr>
+                <td>"<%= key %> "</td>
+                <td><%= comments[key][0] %> </td>
+              </tr>
+            <% } %> 
+              </table> <% } %> 
+          </div>
+
+
+      <%}else{ %>
+      <h1 id="signin">Please Sign in <a href="/signin">here</a> to view your profile</h1>  
+      <% } %> 
 </body>
 </html> 
+<script defer>
+  document.getElementById('showComments').addEventListener("click", function(){
+      document.getElementById('comments').style.display = "block";
+    })
+</script>
+
+<style>
+  h3{
+    font-size: large; 
+    margin: 20px;
+  }
+</style>
