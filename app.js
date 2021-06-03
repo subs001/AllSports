@@ -103,8 +103,9 @@ app.get('/signin', function(req, res){
 //basketball
 //gameID has been made global to allow it to be accessed across functions, as it is obtained in sport and used in comment
 var gameID = "";
+var gameDetail = "";
 app.get('/basketball', function(req,res){
-    let d = new Date();
+        let d = new Date();
         let p = new Date();
         let t = new Date();
         p.setDate(p.getDate() - 1);
@@ -116,17 +117,19 @@ app.get('/basketball', function(req,res){
             .then(function(response2){
                 res.render('basketball', {data: response. data, news: response2.data.articles})
                 app.post('/gameComments', function(req1, res1){
-                gameID = req1.body.gameID.trim();
-                res1.redirect('basketball/comments/' + req1.body.gameID.trim());
-            })
-        })        
-    })
+                    gameID = req1.body.gameID.trim();
+                    console.log(req1.body.gameID);
+                    gameDetail = req1.body.gameDetail;
+                    res1.redirect('basketball/comments/' + req1.body.gameID.trim());
+                })
+            })        
+        })
 })
 
 
-// soccer main page, lists competitions
+// soccer competitions page
 var competitionsId;
-app.get('/soccer',function(req,res){
+app.get('/soccer/soccerCompetitions',function(req,res){
     var options = {
         method: 'GET',
         url: 'http://api.football-data.org/v2/competitions/',
@@ -138,10 +141,10 @@ app.get('/soccer',function(req,res){
       axios.request(options).then(function (response) {
           
         //   var socData = JSON.stringify(response.data);
-          res.render('soccer', {data: response.data});
-          app.post('/matches', function(socReq1, socRes1){
+          res.render('soccerCOMP', {data: response.data});
+          app.post('/soccer', function(socReq1, socRes1){
             competitionsId = socReq1.body.competitionsId.trim();
-            socRes1.redirect('soccer/matches/' + socReq1.body.competitionsId.trim());
+            socRes1.redirect('soccer' + socReq1.body.competitionsId.trim());
         })
 
       }).catch(function (error) {
@@ -151,20 +154,19 @@ app.get('/soccer',function(req,res){
 
 
 
-//page for matches of a particular soccer tourney
-app.get('/soccer/matches/:id',function(req,res){
+//page for matches of a particular soccer tourney(get id from clicking on comp page)
+app.get('/soccer/:id',function(req,res){
     var options = {
         method: 'GET',
         url: 'http://api.football-data.org/v2/competitions/'+competitionsId+'/matches',
         headers: {
           'X-Auth-Token': '5a89a42fee7e466d8063f7cc9534055c'
         }
-
     };
     axios.request(options).then(function (response) {
         console.log(response.data);
-        res.render('matches',{data: response.data});
-    
+        res.render('soccer',{data: response.data});
+        
 
     }).catch(function (error) {
         console.error(error);
@@ -172,8 +174,8 @@ app.get('/soccer/matches/:id',function(req,res){
 
 })
     
-//page for recent soccer matches
-app.get('/soccer/matches/',function(req,res){
+//MAIN page for recent soccer matches
+app.get('/soccer/',function(req,res){
 
     console.log(firstDay);
     console.log(toDay);
@@ -184,15 +186,21 @@ app.get('/soccer/matches/',function(req,res){
           'X-Auth-Token': '5a89a42fee7e466d8063f7cc9534055c'
         }
     };
-    
+    axios.request(options).then(function(response){
+        axios.get("https://newsapi.org/v2/everything?q=Soccer&sortBy=relevancy&apiKey="+keys.news).then(function(response2){
+            console.log(response2.data);
+            res.render('soccer', {data: response.data, news: response2.data.articles});
+            
+            app.post('/gameComments', function(req1, res1){
+                console.log(req1.body.gameID);
+                gameID = req1.body.gameID.trim();
+                gameDetail = req1.body.gameDetail;
+                res1.redirect('soccer/comments/' + req1.body.gameID);
+            })
 
-    axios.request(options).then(function (response) {
-        console.log(response.data);
-        res.render('matches',{data: response.data});
-    
-
-    }).catch(function (error) {
-        console.error(error);
+            }).catch(function (error) {
+                console.error(error);
+                });
     });
 
 })
@@ -211,27 +219,36 @@ app.get('/hockey',function(req,res){
         method: 'GET',
         url: 'https://statsapi.web.nhl.com/api/v1/schedule' +'?startDate='+twoDaysAgo+'&endDate='+toDay,
     }
-    axios.request(options).then(function (response) {
-        console.log(response.data);
-        res.render('hockey',{data: response.data});
-    
+    axios.request(options).then(function(response){
+        axios.get("https://newsapi.org/v2/everything?q=NHL&sortBy=relevancy&apiKey="+keys.news).then(function(response2){
+            console.log(response2.data);
+            res.render('hockey', {data: response.data, news: response2.data.articles});
+            
+            app.post('/gameComments', function(req1, res1){
+                gameID = req1.body.gameID.trim();
+                gameDetail = req1.body.gameDetail;
+                res1.redirect('hockey/comments/' + req1.body.gameID.trim());
+            })
 
-    }).catch(function (error) {
-        console.error(error);
+            }).catch(function (error) {
+                console.error(error);
+                });
     });
-})
+});
+// comments
 app.get('/:sport/comments/:id', function(req, res){
-    var sport = req.params.sport
+    var sport = req.params.sport;
     var size = 0;
+    var gameTeams = gameDetail.split('-');
+    console.log(gameTeams);
     axios.get(keys.firebase + sport+'/.json')
     .then(function(response){
-        res.render('comments', {data: response.data, id: gameID});
+        res.render('comments', {data: response.data, id: gameID, gameTeams: gameTeams});
     })   
     .catch(function(error){
     	console.log(error);
 	})
-		
-    
+
     app.post('/comment', function(req, res){
         var username = "Anonymous"
         var obj = {
