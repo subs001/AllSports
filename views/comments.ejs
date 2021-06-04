@@ -9,6 +9,11 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js" integrity="sha384-5h4UG+6GOuV9qXh6HqOLwZMY4mnLPraeTrjT5v07o347pj6IkfuoASuGBhfDsp3d" crossorigin="anonymous"></script><link rel="stylesheet" href="./style.css">
         <link rel="stylesheet" href="/comments.css">
         <link rel="stylesheet" href="/styles.css">
+        <style>
+          html,body{
+            height: 100%;
+          }
+        </style>
     </head>
 <body>
     <!-- Navbar -->
@@ -29,59 +34,60 @@
 
   
   <!-- End of Navbar -->
-
+    <div style=" height: 100%;padding-top: 10px;">
       <!-- Game Details -->
-      <div class="container" style="border:1px solid black; margin-top: 25px;">
+      <div class="container" style="border:1px solid black; padding-top: 25px;">
 
         <div class = "row"> 
           <div class = "col-lg-2"> <h3> </h3></div>
-          <div class = "col-lg-8" style=" text-align: center;"><h2>Match Details</h2> </div>
+          <div class = "col-lg-8" style=" text-align: center; "><h2>Match Details</h2> </div>
           <div class = "col-lg-2"> <h3> </h3></div>
+        <hr>
+        </div>
+        <div class = "row"> 
+          <div class = "col-lg-4"> <h4><%= gameTeams[0]; %>           </h4></div>
+          <div class = "col-lg-4"style=" text-align: center; "><h1>  VS    </h1> </div>
+          <div class = "col-lg-4"style=" text-align: right; "> <h4><%= gameTeams[1] %></h4></div>
         
         </div>
         <div class = "row"> 
-          <div class = "col-lg-2"> <h4><%= gameTeams[0]; %>           </h4></div>
-          <div class = "col-lg-8"><h1>      </h1> </div>
-          <div class = "col-lg-2"> <h4><%= gameTeams[1] %></h4></div>
-        
-        </div>
-        <div class = "row"> 
-          <div class = "col-lg-2"> <h3><%= gameTeams[2]; %>           </h3></div>
+          <div class = "col-lg-2"style=" text-align: center; "> <h3><%= gameTeams[2]; %>           </h3></div>
           <div class = "col-lg-8" style=" text-align: center;"><h2> </h2> </div>
-          <div class = "col-lg-2"> <h3><%= gameTeams[3]; %></h3></div>
+          <div class = "col-lg-2"style=" text-align: center; "> <h3><%= gameTeams[3]; %></h3></div>
         
         </div>
       </div>
       <!-- End of game details -->
 
-    <!-- Comment Section -->
-    <div class="card comment-box">
-      <% if(data!=null){ var check = 0;%> 
-      <% for(var key of Object.keys(data)){ %>
-        <% if(data[key]['parentID'] == id){ check = 1;%> 
-        <div class="user-comments">
-          <h6><img src="/images/profile-user.png" alt="" width="40" style="margin-right: 20px;"> <%= data[key]['username']  %>: <%= data[key]['content']%></h6>
+      <!-- Comment Section -->
+    
+      <div class="card comment-box">
+        <% if(data!=null){ var check = 0;%> 
+        <% for(var key of Object.keys(data)){ %>
+          <% if(data[key]['parentID'] == id){ check = 1;%> 
+          <div class="user-comments">
+            <h6><img src="/images/profile-user.png" alt="" width="40" style="margin-right: 20px;"> <%= data[key]['username']  %>: <%= data[key]['content']%></h6>
+          </div>
+          <hr>
+        <% }}} %> 
+        <% if(data == null || check == 0){ %>
+          <p>There are currently no comments available!</p>  
+        <% } %> 
+      
+        <!-- Input Comment -->
+        <div class="input-comment comment-box"  style="margin-top: 50px;">
+          <form action="/comment" method="POST" autocomplete="false" >
+              <input type="hidden" name="userComment" id="hiddenInp">
+              <textarea type="text" class="input-text-box" placeholder="Enter your comment here"  id="com-box" maxlength="200" ></textarea>
+              <button type="submit" class="btn-primary" style="margin-top: 10px; border-radius: 10px;" onclick="show_msg();">Submit</button>          
+          </form>
         </div>
-        <hr>
-      <% }}} %> 
-      <% if(data == null || check == 0){ %>
-        <p>There are currently no comments available!</p>  
-      <% } %> 
+        <!-- End of Input Comment -->
+        <div id="msg" style="margin-left: 20px;"></div>
+      </div>
     
-      <!-- Input Comment -->
-     <div class="input-comment comment-box"  style="margin-top: 50px;">
-      <form action="/comment" method="POST" autocomplete="false" >
-          <input type="hidden" name="userComment" id="hiddenInp">
-          <textarea type="text" class="input-text-box" placeholder="Enter your comment here"  id="com-box" maxlength="200" ></textarea>
-          <button type="submit" class="btn-primary" style="margin-top: 10px; border-radius: 10px;" onclick="show_msg();">Submit</button>          
-      </form>
-     </div>
-      <!-- End of Input Comment -->
-    <div id="msg" style="margin-left: 20px;"></div>
+      <!-- End of Comment Section -->
     </div>
-    
-    <!-- End of Comment Section -->
-    
    
 </body>
 </html>

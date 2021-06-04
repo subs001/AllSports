@@ -124,10 +124,13 @@ app.get('/signin', function(req, res){
         })
     })
 })
-//basketball
+
 //gameID has been made global to allow it to be accessed across functions, as it is obtained in sport and used in comment
 var gameID = "";
 var gameDetails = "";
+var sport ='';
+
+//basketball
 app.get('/basketball', function(req,res){
     let d = new Date();
         let p = new Date();
@@ -140,7 +143,10 @@ app.get('/basketball', function(req,res){
             axios.get("https://newsapi.org/v2/everything?q=NBA&apiKey="+keys.news)
             .then(function(response2){
                 res.render('basketball', {data: response. data, news: response2.data.articles})
-                app.post('/gameComments', function(req1, res1){
+                app.post('/gameComments1', function(req1, res1){
+                gameID ="";
+                gameDetail="";  
+                sport = "basketball"; 
                 gameID = req1.body.gameID.trim();
                 gameDetails = req1.body.gameDetail;
                 res1.redirect('basketball/comments/' + req1.body.gameID.trim());
@@ -199,7 +205,9 @@ app.get('/soccer/:id',function(req,res){
     
 //MAIN page for recent soccer matches
 app.get('/soccer/',function(req,res){
-
+    gameID ="";
+    gameDetail="";
+    
     console.log(firstDay);
     console.log(toDay);
     var options = {
@@ -214,10 +222,13 @@ app.get('/soccer/',function(req,res){
             console.log(response2.data);
             res.render('soccer', {data: response.data, news: response2.data.articles});
             
-            app.post('/gameComments', function(req1, res1){
+            app.post('/gameComments3', function(req1, res1){
+                gameID ="";
+                gameDetail="";
+                sport = "soccer"; 
                 console.log(req1.body.gameID);
                 gameID = req1.body.gameID.trim();
-                gameDetail = req1.body.gameDetail;
+                gameDetails = req1.body.gameDetail;
                 res1.redirect('soccer/comments/' + req1.body.gameID);
             })
 
@@ -229,10 +240,12 @@ app.get('/soccer/',function(req,res){
 })
 
 //hockey
-app.get('/hockey',function(req,res){
 
+app.get('/hockey',function(req,res){
+    gameID ="";
+    gameDetail="";
     if(dd>2) {
-        dd = dd - '02';
+        dd = dd - '01';
         var twoDaysAgo = yyyy+'-'+mm+'-'+dd;
     }else {
         var twoDaysAgo = yyyy+'-'+mm+'-'+dd;
@@ -246,9 +259,11 @@ app.get('/hockey',function(req,res){
             console.log(response2.data);
             res.render('hockey', {data: response.data, news: response2.data.articles});
             
-            app.post('/gameComments', function(req1, res1){
+            app.post('/gameComments2', function(req1, res1){
+                
                 gameID = req1.body.gameID.trim();
-                gameDetail = req1.body.gameDetail;
+                gameDetails = req1.body.gameDetail;
+                sport = "hockey"; 
                 res1.redirect('hockey/comments/' + req1.body.gameID.trim());
             })
 
@@ -259,46 +274,51 @@ app.get('/hockey',function(req,res){
 });
 // comments
 app.get('/:sport/comments/:id', function(req, res){
-    var sport = req.params.sport
+    console.log('haha'+sport);
     var size = 0;
     var gameTeams = gameDetails.split('-');
+    console.log(gameID);
+    console.log(gameDetails);
+    console.log(gameTeams);
     axios.get(keys.firebase + sport+'/.json')
     .then(function(response){
         res.render('comments', {data: response.data, id: gameID, gameTeams: gameTeams});
+        app.post('/comment', function(req, res){
+            (current_user=="")?username="Anonymous":username=current_user;
+            current_comment = req.body.userComment;
+            var obj = {
+                "parentID": gameID,
+                "content": current_comment,
+                "username": username
+            }
+            console.log(sport);
+            var datetime = new Date();
+            datetime = datetime.toISOString().slice(0,10);
+            axios.post(keys.firebase+sport+'/.json', obj)
+            .then(function(){
+                if(current_user!=""){
+                    axios.put(keys.firebase+'user-comments/'+current_user+'/'+current_comment+'/.json', [datetime])
+                    .then(function(){
+                        res.status(204).send();
+                    })
+                    .catch(function(error){console.log(error);})
+                }
+                else{
+                    res.status(204).send();
+                }
+            })      
+            .catch(function(){
+            console.log("error");
+            }) 
+            
+        })
     })   
     .catch(function(error){
     	console.log(error);
 	})
 		
     
-    app.post('/comment', function(req, res){
-        (current_user=="")?username="Anonymous":username=current_user;
-        current_comment = req.body.userComment;
-        var obj = {
-            "parentID": gameID,
-            "content": current_comment,
-            "username": username
-        }
-        var datetime = new Date();
-        datetime = datetime.toISOString().slice(0,10);
-        axios.post(keys.firebase+sport+'/.json', obj)
-        .then(function(){
-            if(current_user!=""){
-                axios.put(keys.firebase+'user-comments/'+current_user+'/'+current_comment+'/.json', [datetime])
-                .then(function(){
-                    res.status(204).send();
-                })
-                .catch(function(error){console.log(error);})
-            }
-            else{
-                res.status(204).send();
-            }
-        })      
-        .catch(function(){
-    	console.log("error");
-		}) 
-        
-    })
+    
 })
 
 app.listen(3000);

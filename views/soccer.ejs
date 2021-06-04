@@ -34,22 +34,20 @@
   
   <!-- End of Navbar -->
 
-
-  
     <div style="background-color: rgb(3, 15, 26);">
       <!-- score/news selector -->
-      <div class="text-center" style="margin-bottom: 35px;">
+      <div class="text-center" style="margin-bottom: 35px; padding-top: 35px;">
           <div class="btn-group mx-auto" role="group" style="width: 50%;">
-              <button type="button" class="btn btn-secondary shadow-none" onclick="scoreShow()">Scores</button>
-              <button type="button" class="btn btn-secondary shadow-none" onclick="newsShow()">Soccer News</button>
+              <button type="button" id="scorebtn" class="btn btn-light" onclick="scoreShow()"> Scores</button>
+              <button type="button" id="newsbtn" class="btn btn-dark" onclick="newsShow()"> News</button>
           </div>
       </div>
       <!-- divsnews -->
-      <div class="container" id="soccerNews" style="display: none;">
+      <div class="container" id="soccerNews" style="display: none; padding-top: 25px;background-color: whitesmoke;">
 
           <!--Grid row-->
           <div class="row">
-            <div class="col-md-9 mb-4">
+            <div class="col-md-12 mb-4">
               <section>
                 <% for(i=0;i<4;i++){  %>
                 <!-- Individual Post -->
@@ -110,7 +108,7 @@
                           <td>
                               <%= data['matches'][key]['status'] %>
                           </td>
-                          <form action="/gameComments" method="POST">
+                          <form action="/gameComments3" method="POST">
                               <input type="hidden" name="gameID" value="<%=  data['matches'][key]['id'] %> ">
                               <input type="hidden" name="gameDetail" value="<%= data['matches'][key]['homeTeam']['name']+'-'+ data['matches'][key]['awayTeam']['name']+'-'+ data['matches'][key]['score']['fullTime']['homeTeam'] +'-' + data['matches'][key]['score']['fullTime']['awayTeam']; %>">
                             <td><a href="#" ><button class="btn-primary" style="border-radius: 10px;">GO</button></a></td>
@@ -125,14 +123,21 @@
 <script defer>
     scores = document.getElementById('soccerScores');
     news = document.getElementById('soccerNews');
-
+    sbtn = document.getElementById('scorebtn');
+    nbtn = document.getElementById('newsbtn');
     function scoreShow(){
         scores.style.display = "block";
         news.style.display = "none";
+        sbtn.className = 'btn btn-light';
+        nbtn.className = 'btn btn-dark';
+        
     }
     function newsShow(){
         scores.style.display = "none";
         news.style.display = "block";
+        nbtn.className = 'btn btn-light';
+        sbtn.className = 'btn btn-dark';
+
     }
 </script>
 </html>
