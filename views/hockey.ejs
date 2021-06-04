@@ -35,17 +35,17 @@
     <!-- score/news selector -->
     <div class="text-center" style="margin-bottom: 35px;">
         <div class="btn-group mx-auto" role="group" style="width: 50%;">
-            <button type="button" class="btn btn-secondary shadow-none" onclick="scoreShow()">Scores</button>
-            <button type="button" class="btn btn-secondary shadow-none" onclick="newsShow()">NHL News</button>
+            <button type="button" id="scorebtn" class="btn btn-light" onclick="scoreShow()">Scores</button>
+            <button type="button" id="newsbtn" class="btn btn-dark" onclick="newsShow()">NHL News</button>
         </div>
     </div>
 
     <!-- News -->
     <!-- divsnews -->
-    <div class="container" id="hockeyNews" style="display: none;">
+    <div class="container" id="hockeyNews" style="display: none;padding-top: 25px;background-color: whitesmoke;">
       <!--Grid row-->
       <div class="row">
-        <div class="col-md-9 mb-4">
+        <div class="col-md-12 mb-4">
           <section>
             <% for(i=0;i<4;i++){  %>
             <!-- Individual Post -->
@@ -138,14 +138,20 @@
 <script defer>
     scores = document.getElementById('hockeyScores');
     news = document.getElementById('hockeyNews');
-
+    sbtn = document.getElementById('scorebtn');
+    nbtn = document.getElementById('newsbtn');
+    
     function scoreShow(){
         scores.style.display = "block";
         news.style.display = "none";
+        sbtn.className = 'btn btn-light';
+        nbtn.className = 'btn btn-dark';
     }
     function newsShow(){
         scores.style.display = "none";
         news.style.display = "block";
+        nbtn.className = 'btn btn-light';
+        sbtn.className = 'btn btn-dark';
     }
 </script>
 </html>

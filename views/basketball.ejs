@@ -37,14 +37,18 @@
   
   <!-- End of Navbar -->
   
-  <div style="background-color: rgb(3, 15, 26); height: 100%;">
-    <div style="margin: 0px 42%;">Scores
-    <label class="switch">
-      <input type="checkbox" id="switch">
-      <span class="slider round"></span>
-    </label>News
+  <div style="background-color: rgb(3, 15, 26); height: 100%; min-height: 1400px;">
+
+    <!-- score/news selector -->
+    <div class="text-center" style="margin-bottom: 35px; padding-top: 35px;">
+      <div class="btn-group mx-auto" role="group" style="width: 50%;">
+          <button type="button" id="scorebtn" class="btn btn-light" onclick="scoreShow()">Soccer Scores</button>
+          <button type="button" id="newsbtn" class="btn btn-dark" onclick="newsShow()">Soccer News</button>
+      </div>
     </div>
-    <div id="page-content" class="container basketball-score-card"></div>
+    <!-- divsnews -->
+
+    
      
     <div class="container basketball-score-card" id="scores">
     <table class="table table-striped table-dark table-hover table-borderless" id="bball-scores">
@@ -90,12 +94,12 @@
     <!-- News -->
     <div id="news"  style="display: none; margin-top: 20px;">  
       <!-- divsnews -->
-      <div class="container" >
+      <div class="container" style="padding-top: 25px;background-color: whitesmoke;">
         <!--Grid row-->
         <div class="row">
-          <div class="col-md-9 mb-4">
+          <div class="col-md-12 mb-4">
             <section>
-              <% for(i=0;i<8;i++){  %>
+              <% for(i=0;i<4;i++){  %>
               <!-- Individual Post -->
               <div class="row center" style="margin-bottom: 20px;">
                 <div class="col-md-4 mb-4">
@@ -127,15 +131,21 @@
   <script defer>
     scores = document.getElementById('scores');
     news = document.getElementById('news')
-    document.getElementById('switch').addEventListener("click", function(){
-      if(document.getElementById('switch').checked == false){
+    sbtn = document.getElementById('scorebtn');
+    nbtn = document.getElementById('newsbtn');
+    function scoreShow(){
         scores.style.display = "block";
         news.style.display = "none";
-      }
-      else{
+        sbtn.className = 'btn btn-light';
+        nbtn.className = 'btn btn-dark';
+        
+    }
+    function newsShow(){
         scores.style.display = "none";
         news.style.display = "block";
-      }
-    })
+        nbtn.className = 'btn btn-light';
+        sbtn.className = 'btn btn-dark';
+
+    }
   </script>
 </html>

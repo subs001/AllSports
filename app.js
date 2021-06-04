@@ -200,6 +200,7 @@ app.get('/soccer/:id',function(req,res){
 //MAIN page for recent soccer matches
 app.get('/soccer/',function(req,res){
 
+    
     console.log(firstDay);
     console.log(toDay);
     var options = {
@@ -232,7 +233,7 @@ app.get('/soccer/',function(req,res){
 app.get('/hockey',function(req,res){
 
     if(dd>2) {
-        dd = dd - '02';
+        dd = dd - '01';
         var twoDaysAgo = yyyy+'-'+mm+'-'+dd;
     }else {
         var twoDaysAgo = yyyy+'-'+mm+'-'+dd;
@@ -262,6 +263,8 @@ app.get('/:sport/comments/:id', function(req, res){
     var sport = req.params.sport
     var size = 0;
     var gameTeams = gameDetails.split('-');
+    console.log(gameID);
+    console.log(gameTeams);
     axios.get(keys.firebase + sport+'/.json')
     .then(function(response){
         res.render('comments', {data: response.data, id: gameID, gameTeams: gameTeams});
