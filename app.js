@@ -163,7 +163,7 @@ app.get('/soccer/soccerCompetitions',function(req,res){
         method: 'GET',
         url: 'http://api.football-data.org/v2/competitions/',
         headers: {
-          'X-Auth-Token': '5a89a42fee7e466d8063f7cc9534055c'
+            'X-Auth-Token': keys.soccerAPI
         }
       };
       
@@ -189,7 +189,7 @@ app.get('/soccer/:id',function(req,res){
         method: 'GET',
         url: 'http://api.football-data.org/v2/competitions/'+competitionsId+'/matches',
         headers: {
-          'X-Auth-Token': '5a89a42fee7e466d8063f7cc9534055c'
+          'X-Auth-Token': keys.soccerAPI
         }
     };
     axios.request(options).then(function (response) {
@@ -214,7 +214,7 @@ app.get('/soccer/',function(req,res){
         method: 'GET',
         url: 'http://api.football-data.org/v2/matches?dateFrom='+firstDay+'&dateTo='+toDay,
         headers: {
-          'X-Auth-Token': '5a89a42fee7e466d8063f7cc9534055c'
+            'X-Auth-Token': keys.soccerAPI
         }
     };
     axios.request(options).then(function(response){
